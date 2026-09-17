@@ -1,147 +1,153 @@
-# Hotline Miami Remap
+# Remap
 
-Remaps keys in Hotline Miami to others using AutoHotkey.
+A small, general purpose key remapper for Windows, built on AutoHotkey v2.
 
-Out of the box it does the one thing everybody wants: **E throws** (it becomes the
-right mouse button), so you can throw and pick up weapons without taking your
-hand off the mouse. Everything else, including the WASD / movement remaps, ships
-switched off and is one tick box away in the settings window.
+Remaps live in **profiles**: plain text files, each one scoped to the programs
+you choose. A profile only does anything while one of its programs is the
+window you are tabbed into, so you can leave it running all day. Several
+profiles can be on at once.
 
-The remaps only apply while a Hotline Miami window is in focus, so you can leave
-the script running while you alt tab, chat, or browse.
+It ships with a profile that fixes the awkward bit of Hotline Miami on a
+laptop:
 
 ```
-E  ->  right mouse button   (throw / pick up)
+press E  ->  the game receives a right click   (throw and pick up)
 ```
+
+The `E` you press is cancelled, so the game never sees it. Only the right
+click arrives.
 
 ## Quick start
 
 1. Install [AutoHotkey v2](https://www.autohotkey.com/) (v2.0 or newer, not v1).
-2. Download `HotlineMiamiRemap.ahk` from this repository.
-3. Double click it. A tray icon appears.
-4. Start Hotline Miami and press **E** to throw.
+2. Download `Remap.ahk` and the `profiles` folder next to it.
+3. Double click `Remap.ahk`. A tray icon appears.
 
-Press **F9** (or double click the tray icon) for the settings window, **F8** to
-switch all remapping on and off. Both hotkeys are configurable.
+**F9** opens the window, **F8** switches all remapping on and off. Both are
+configurable. If you only grab `Remap.ahk`, it writes the starter profiles
+itself the first time it runs.
 
-## What is set up by default
+## The window
 
-| When you press | The game gets | Group | On? |
-| --- | --- | --- | --- |
-| `E` | right mouse (throw / pick up) | Core | **yes** |
-| `Q` | left mouse (attack) | Core | no |
-| `Up` `Left` `Down` `Right` | `W` `A` `S` `D` | Movement | no |
-| `Mouse 4` | `R` (restart level), tap mode | Extras | no |
-| `Mouse 5` | `Space` | Extras | no |
-| `Caps Lock` | `Shift` | Extras | no |
-| `Left Windows` | nothing, key is blocked | Extras | no |
-| `Right Alt` | left mouse on turbo, 60 ms | Extras | no |
-
-Nothing is locked down: change any row, add your own, or delete the lot and
-start over with **Restore defaults**.
-
-### Turning on WASD / movement
-
-Open the settings window and tick **"Enable the movement group"**. That switches
-on the four arrow key remaps in one go, so the arrow keys move your character
-while the game still thinks it is reading WASD. Want a different movement
-layout, say IJKL or ESDF? Edit those four rows (or add new ones) and point them
-at `w`, `a`, `s` and `d`.
-
-## The settings window
-
-* **The list.** One row per remap. Double click a row to edit it, or use
-  Add / Edit / On off / Remove. Changes take effect immediately and are saved
-  for you.
-* **Capture.** In the edit window, click Capture and press the key or mouse
-  button you mean. No need to know AutoHotkey key names.
-* **Profiles.** Keep separate setups side by side (one for Hotline Miami, one
-  for Hotline Miami 2, one for a friend) and switch between them from the drop
-  down. New, Copy and Delete are right there.
-* **Options.**
-  * *Only remap while Hotline Miami is in focus* (on by default). Untick it to
-    remap everywhere, which is handy when testing.
-  * *Release stuck keys automatically*: if you alt tab mid throw, the script
-    lets go of whatever it was holding.
-  * *Game programs*: the executables to watch for, comma separated. Defaults to
-    `HotlineMiami.exe, HotlineMiami2.exe`. Add your own if you use a different
-    build.
-  * *Send using*: `Input` is fastest and right for almost everyone. Try `Event`
-    or `Play` only if the game ignores the remapped key.
-  * *Run at Windows startup*: one click, creates or removes the shortcut.
-
-## Modes
-
-Every remap has a mode, so one key can do more than a plain swap.
-
-| Mode | What it does |
+| Pane | What it holds |
 | --- | --- |
-| `hold` | The target is held for exactly as long as you hold your key. Use this for throwing, attacking and moving. |
+| Profiles | Every profile in the folder. Tick one to switch it on. Double click for its name, description and programs. |
+| Keys | The remaps in the selected profile. Double click a row to edit it. |
+| Applies to | The programs the selected profile is limited to. **Choose programs** lists what is running, or lets you click the window you mean. |
+
+**Choose programs** is the answer to "only while I am tabbed into this". Tick
+the programs, or hit *Pick a window* and click the game. Leave it empty and the
+profile works everywhere.
+
+Editing anything writes it straight back to the profile file, so there is no
+save button to forget.
+
+## Profiles that come with it
+
+| File | What it does | On by default |
+| --- | --- | --- |
+| `hotline-miami.ini` | E throws and picks up, for trackpads. Scoped to `HotlineMiami.exe` and `HotlineMiami2.exe`. | **yes** |
+| `laptop-trackpad.ini` | Right Alt right clicks, Right Ctrl middle clicks, everywhere. | no |
+| `caps-lock-to-ctrl.ini` | Caps Lock acts as Ctrl. | no |
+| `arrow-keys-as-wasd.ini` | Arrow keys move in games that only read WASD. | no |
+| `no-windows-key.ini` | Swallows the Windows key so nothing gets minimised mid fight. | no |
+
+Copy one as a starting point for your own, or hit **New**.
+
+## The profile format
+
+A profile is an ini file you can edit by hand or from the window:
+
+```ini
+[profile]
+name        = Hotline Miami
+description = Throw and pick up with E instead of right click.
+enabled     = yes
+match       = HotlineMiami.exe, HotlineMiami2.exe   ; blank = every program
+
+[keys]
+e = RButton, block       ; press E, the game receives a right click
+q = LButton, off         ; off means the line is there but not doing anything
+f = MButton, off
+```
+
+One line per remap: `what I press = what the program receives, options`.
+Anything after `;` is a note and shows up in the window.
+
+| Option | What it does |
+| --- | --- |
+| `hold` | Default. The target is held for exactly as long as you hold the key. |
 | `tap` | One press, one click, however long you hold the key. |
 | `toggle` | Press once to hold the target down, press again to let go. |
-| `turbo` | Repeats the target while you hold the key. The interval in milliseconds is yours to set. |
+| `turbo 60` | Repeats the target while you hold the key, every 60 ms. |
+| `block` | Default. The key you press is cancelled. |
+| `pass` | Also send the key you pressed, as well as the target. |
+| `off` | Keep the line but switch it off. |
 
-There is also **Also send the original key**, which passes your key through to
-the game as well as sending the target, and the target `None`, which swallows
-the key so the game never sees it (that is how the Windows key row works).
+A target of `none` swallows the key and sends nothing, which is how
+`no-windows-key.ini` works.
+
+`match` takes a comma separated list. Each entry is an executable
+(`HotlineMiami.exe`), part of a window title (`Photoshop`), or a raw
+AutoHotkey criterion (`ahk_class Notepad`).
+
+### When two profiles want the same key
+
+The profile aimed at the program you are in beats a global one. So Caps Lock
+can be Ctrl everywhere while a game profile turns it into something else for
+that game only. The window marks the losing row **beaten by ...** so nothing is
+a mystery.
 
 ## Key names
 
-The Capture button fills these in for you, but if you would rather type:
+Capture (in the edit window) records whatever you press, so you rarely need
+these:
 
 * Mouse: `LButton`, `RButton`, `MButton`, `XButton1`, `XButton2`, `WheelUp`, `WheelDown`
-* Movement: `w`, `a`, `s`, `d`, `Up`, `Down`, `Left`, `Right`
-* Other: `Space`, `Enter`, `Tab`, `Escape`, `Shift`, `Ctrl`, `Alt`, `CapsLock`,
-  `F1` to `F12`, `Numpad0` to `Numpad9`
-* `None` blocks the key
+* Keyboard: `a` to `z`, `0` to `9`, `Space`, `Enter`, `Tab`, `Escape`, `Shift`,
+  `Ctrl`, `Alt`, `CapsLock`, `Up`, `Down`, `Left`, `Right`, `F1` to `F12`,
+  `Numpad0` to `Numpad9`, `LWin`, `RWin`
+* `none` swallows the key
 
-The full list lives in the
+The full list is the
 [AutoHotkey key list](https://www.autohotkey.com/docs/v2/KeyList.htm).
 
-## Where settings are kept
+## Options
 
-Next to the script, in `HotlineMiamiRemap.ini`. Copy the folder and your setup
-comes with it. One line per remap:
-
-```ini
-[Profile Default]
-Count=2
-M1=1|e|RButton|hold|60|0|Core|Throw / pick up weapon
-M2=0|Up|w|hold|60|0|Movement|Arrow keys move instead of WASD
-```
-
-The fields are: enabled, your key, what the game gets, mode, turbo interval,
-passthrough, group, note. You can edit the file by hand and pick
-**Reload script** from the tray menu, but the settings window is easier.
+Behind the **Options** button: the on / off and window hotkeys, the send method
+(`Input`, or `Event` and `Play` for programs that ignore synthetic input),
+whether stuck keys are released automatically, on screen messages, and a one
+click **Run at Windows startup**. They live in `Remap.ini` next to the script.
 
 ## Troubleshooting
 
-**The remap does nothing.** Check the tray tooltip: it says `active`,
-`waiting for the game` or `off`. If it is waiting while the game is running,
-your build uses a different executable name; add it under *Game programs*. If
-you launched the game as administrator, run the script as administrator too, or
-Windows will not let it send keys to the game.
+**Nothing happens.** Hover the tray icon. It says `off`, `waiting`, or
+`active: <profile>`. If it says waiting while your program is in front, the
+profile is scoped to a different executable; fix it with **Choose programs**.
+If you launched the program as administrator, run Remap as administrator too,
+or Windows will not let it send keys there.
 
-**A key feels stuck.** Press the on / off hotkey twice (F8 by default), which
-releases everything. *Release stuck keys automatically* handles the usual cause,
-alt tabbing mid press.
+**A key feels stuck.** Press F8 twice, which releases everything. The watchdog
+normally catches this on its own within a third of a second.
 
-**The game ignores the sent key.** Switch *Send using* from `Input` to `Event`,
-and to `Play` as a last resort. Some capture and overlay software also swallows
-synthetic input.
+**The program ignores the key.** Switch *Send using* to `Event`, then `Play`.
 
-**On screen messages do not show.** Tooltips cannot draw over exclusive
-fullscreen. Run the game borderless or windowed, or untick the option.
-
-**It does not start.** You need AutoHotkey **v2**. A v1 install will refuse the
+**It will not start.** You need AutoHotkey **v2**. A v1 install refuses the
 script with a version error.
+
+## Why AutoHotkey and not Python
+
+Because you should be able to read what you are running. AutoHotkey installs
+once and runs a plain `.ahk` text file, so nothing here is a mystery binary.
+Python would mean either shipping a compiled `.exe`, which is exactly the thing
+that looks dangerous, or asking everyone to install Python plus packages for
+low level keyboard hooks that AutoHotkey does natively and better. The whole
+thing is one readable file and a folder of text.
 
 ## Requirements
 
 * Windows
 * AutoHotkey v2.0 or newer
-* Hotline Miami, or any other game really: nothing here is specific to it
-  beyond the default executable names
 
 ## License
 
