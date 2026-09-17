@@ -305,7 +305,7 @@ SaveProfile(p) {
         if !b.Enabled
             line .= ", off"
         if (b.Note != "")
-            line .= "   ; " b.Note
+            line .= "   `; " b.Note
         out .= line "`r`n"
     }
 
@@ -1702,7 +1702,6 @@ StarterProfiles() {
     t .= "Left  = a`r`n"
     t .= "Down  = s`r`n"
     t .= "Right = d`r`n"
-    t .= "`r`n"
     files["arrow-keys-as-wasd.ini"] := t
 
     t := ""
@@ -1717,13 +1716,12 @@ StarterProfiles() {
     t .= "`r`n"
     t .= "[keys]`r`n"
     t .= "CapsLock = Ctrl`r`n"
-    t .= "`r`n"
     files["caps-lock-to-ctrl.ini"] := t
 
     t := ""
     t .= "; Hotline Miami`r`n"
     t .= "; Press E to throw or pick up, instead of right clicking the trackpad.`r`n"
-    t .= "; Format: when I press = what the app receives, options   ; note`r`n"
+    t .= "; Format: when I press = what the app receives, options   `; note`r`n"
     t .= "`r`n"
     t .= "[profile]`r`n"
     t .= "name        = Hotline Miami`r`n"
@@ -1732,10 +1730,9 @@ StarterProfiles() {
     t .= "match       = HotlineMiami.exe, HotlineMiami2.exe`r`n"
     t .= "`r`n"
     t .= "[keys]`r`n"
-    t .= "e = RButton, block       ; throw / pick up, the game sees a right click`r`n"
-    t .= "q = LButton, off         ; turn this on to attack with Q as well`r`n"
-    t .= "f = MButton, off         ; middle click, unused by the game by default`r`n"
-    t .= "`r`n"
+    t .= "e = RButton, block       `; throw / pick up, the game sees a right click`r`n"
+    t .= "q = LButton, off         `; turn this on to attack with Q as well`r`n"
+    t .= "f = MButton, off         `; middle click, unused by the game by default`r`n"
     files["hotline-miami.ini"] := t
 
     t := ""
@@ -1751,9 +1748,8 @@ StarterProfiles() {
     t .= "match       =`r`n"
     t .= "`r`n"
     t .= "[keys]`r`n"
-    t .= "RAlt  = RButton          ; right click`r`n"
-    t .= "RCtrl = MButton, off     ; middle click, for opening links in a new tab`r`n"
-    t .= "`r`n"
+    t .= "RAlt  = RButton          `; right click`r`n"
+    t .= "RCtrl = MButton, off     `; middle click, for opening links in a new tab`r`n"
     files["laptop-trackpad.ini"] := t
 
     t := ""
@@ -1768,9 +1764,8 @@ StarterProfiles() {
     t .= "match       =`r`n"
     t .= "`r`n"
     t .= "[keys]`r`n"
-    t .= "LWin = none              ; none = the key is swallowed, nothing is sent`r`n"
+    t .= "LWin = none              `; none = the key is swallowed, nothing is sent`r`n"
     t .= "RWin = none`r`n"
-    t .= "`r`n"
     files["no-windows-key.ini"] := t
 
     return files
