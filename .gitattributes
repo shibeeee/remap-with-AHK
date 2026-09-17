@@ -1,0 +1,4 @@
+# AutoHotkey and ini files are read on Windows, keep them CRLF on checkout.
+*.ahk text eol=crlf
+*.ini text eol=crlf
+*.md text eol=lf
