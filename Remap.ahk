@@ -689,7 +689,7 @@ FileName(path) {
 }
 
 SafeFileName(name) {
-    name := RegExReplace(Trim(name), "[\\/:*?""<>|]", "-")
+    name := RegExReplace(Trim(name), '[\\/:*?"<>|]', "-")
     name := RegExReplace(name, "\s+", "-")
     return (name = "") ? "profile" : StrLower(name)
 }
@@ -1689,7 +1689,7 @@ StarterProfiles() {
     t := ""
     t .= "; Arrow keys as WASD`r`n"
     t .= "; For games that only read WASD when you would rather use the arrows.`r`n"
-    t .= "; Fill in ""match"" with the game so this does not follow you around.`r`n"
+    t .= "; Fill in `"match`" with the game so this does not follow you around.`r`n"
     t .= "`r`n"
     t .= "[profile]`r`n"
     t .= "name        = Arrow keys as WASD`r`n"
@@ -1738,7 +1738,7 @@ StarterProfiles() {
     t := ""
     t .= "; Laptop trackpad`r`n"
     t .= "; Mouse buttons from the keyboard, for trackpads that make them awkward.`r`n"
-    t .= "; Works everywhere because ""match"" is blank. Narrow it to one program`r`n"
+    t .= "; Works everywhere because `"match`" is blank. Narrow it to one program`r`n"
     t .= "; with the Choose programs button if you would rather it stayed local.`r`n"
     t .= "`r`n"
     t .= "[profile]`r`n"
@@ -1755,7 +1755,7 @@ StarterProfiles() {
     t := ""
     t .= "; No Windows key`r`n"
     t .= "; Stops the Windows key from minimising a game mid fight.`r`n"
-    t .= "; Fill in ""match"" with your game, or leave it blank to block it everywhere.`r`n"
+    t .= "; Fill in `"match`" with your game, or leave it blank to block it everywhere.`r`n"
     t .= "`r`n"
     t .= "[profile]`r`n"
     t .= "name        = No Windows key`r`n"
